@@ -84,7 +84,7 @@ def get_pfp():
             print("Trying profile ID {}".format(i))
             response = requests.get(url, headers=headers)
             if response.status_code == 200:
-                with open("./satisfyer/image_{}.jpg".format(i), "wb") as f:
+                with open("./satisfyer/profile_photos/{}.jpg".format(i), "wb") as f:
                     f.write(response.content)
             else:
                 print("Failed to download image:", response.status_code)
