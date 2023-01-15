@@ -7,6 +7,13 @@ This program has been made <b>FOR RESEARCH PURPOSES ONLY</b>. I have researched 
 ## Requirements
 Only the requests library is needed for this thing to work.
 
+## Usage
+The wrapper uses a CLI. Simply run:
+
+  python3 wrapper.py
+  
+Need help with commands? Type "help" and a complete list with the available functionalities will show up :)
+
 ## About
 Made with <3 by Jorge Martínez (nothing4free). For more info about this research, go to [nothing4free.org](https://nothing4free.org)
 
