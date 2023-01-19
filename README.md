@@ -5,7 +5,7 @@ A Python program that acts as a wrapper for the Satisfyer API used on their app,
 This program has been made <b>FOR RESEARCH PURPOSES ONLY</b>. I have researched about the security on IoT areas that require extreme privacy and protection, and this is one of the tools I created to make this research easier and faster. I am not responsible for any use outside of researching and learning about how these things work. You know what to do and what not to do, don't be stupid.<br>
 
 ## Requirements
-Only the `requests` library is needed for this thing to work.
+Only the `requests` library is needed for this thing to work. An existing Satisfyer Connect account is needed as well; it can be created using the app.
 
 ## Usage
 The wrapper uses a CLI. Simply run:
