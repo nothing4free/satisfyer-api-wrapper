@@ -1,4 +1,5 @@
 import requests, hashlib, sys, os, json
+import configparser
 
 class Session:
     x_auth_token = None
@@ -29,8 +30,19 @@ def str_to_sha512(string: str) -> str:
     return encrypted_string
 
 def login():
-    user = input("User: ")
-    plain_pwd = input("Pass: ")
+    config = configparser.ConfigParser()
+    config.read('login.config')
+
+    try:
+        user = config.get('Credentials', 'User')
+        plain_pwd = config.get('Credentials', 'Pass')
+    except configparser.NoSectionError:
+        print("[!] ERROR: No 'Credentials' section found in login.config.")
+        return
+    except configparser.NoOptionError:
+        print("[!] ERROR: The required options 'User' or 'Pass' not found in the 'Credentials' section.")
+        return
+
     pwd = str_to_sha512(plain_pwd)
     
     headers = {
